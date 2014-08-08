@@ -51,3 +51,6 @@ Returns a model called __userFiles with an Array of objects
 
 ## Demo
 Do you want to see this directive in action? Visit http://wender.com.br/angular/angular-multiple-file-upload.html
+
+## Bower
+bower install angular-multiple-file-upload
