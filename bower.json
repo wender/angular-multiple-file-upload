@@ -1,0 +1,7 @@
+{
+    "name": "AngularJS Directive for multiple file upload",
+    "version": "1.0.0",
+    "author" : "Wender Lima",
+    "description": "AngularJS directive for file upload with no dependencies, just HTML5 and pure javascript",
+    "dependencies": {}
+}
