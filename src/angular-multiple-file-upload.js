@@ -10,8 +10,13 @@ angular.module('fileUpload',[])
                 __userFiles: '=ngModel'
             },
             link: function(scope, el, attr){
-                el.append('<input style="display: none !important;" type="file" '+(attr.multiple=='true'?'multiple':'')+' accept="'+(attr.accept?attr.accept:'')+'" name="'+(attr.name?attr.name:'userFile')+'"/>');
-                var uri = attr.uri||'/upload/upload';
+                var fileName,
+                    uri;
+
+                fileName = attr.name || 'userFile';
+
+                el.append('<input style="display: none !important;" type="file" '+(attr.multiple=='true'?'multiple':'')+' accept="'+(attr.accept?attr.accept:'')+'" name="'+fileName+'"/>');
+                uri = attr.uri||'/upload/upload';
 
                 function uploadFile(file, uri, index) {
                     var xhr = new XMLHttpRequest(),
@@ -32,7 +37,7 @@ angular.module('fileUpload',[])
                         scope.__userFiles[index].percent = progress;
                         scope.$apply();
                     }, false);
-                    fd.append('userFile', file);
+                    fd.append(fileName, file);
                     xhr.send(fd);
                     return {
                         name: file.name,
