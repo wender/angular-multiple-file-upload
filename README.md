@@ -30,7 +30,7 @@ This directive has it's own model called "__userFiles", this model contains whol
 - **name**: default 'userFile'
 - **uri**: default '/upload/upload'
 - **multiple**: default 'true'
-- **accept**: default empty (Accept comma-separated list of MINE Types)
+- **accept**: default empty (Accept comma-separated list of MIME Types)
 
 ## Return
 Returns a model called __userFiles with an Array of objects
