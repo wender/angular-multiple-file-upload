@@ -32,6 +32,7 @@ This directive has it's own model called "__userFiles", this model contains whol
 - **multiple**: default 'true'
 - **accept**: default empty (Accept comma-separated list of MIME Types)
 - **credentials**: default 'false' (Share your credentials between your browser and the API)
+- **preview**: default 'false' (Process a base64 preview of the selected image)
 
 ## Return
 Returns a model called __userFiles with an Array of objects
@@ -46,7 +47,8 @@ Returns a model called __userFiles with an Array of objects
     statusText: xhr.statusText,
     response: xhr.response
   },
-  percent: 0
+  percent: 0,
+  preview: data:base64
 }]
 ```
 

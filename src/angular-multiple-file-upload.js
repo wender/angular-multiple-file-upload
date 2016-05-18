@@ -12,16 +12,18 @@ angular.module('fileUpload', [])
             link: function (scope, el, attr) {
                 var fileName,
                     uri,
-                    shareCredentials;
+                    shareCredentials,
+                    withPreview;
 
                 fileName = attr.name || 'userFile';
                 shareCredentials = attr.credentials === 'true' ? true : false;
+                withPreview = attr.preview === 'true' ? true : false;
 
                 el.append('<input style="display: none !important;" type="file" ' + (attr.multiple == 'true' ? 'multiple' : '') + ' accept="' + (attr.accept ? attr.accept : '') + '" name="' + fileName + '"/>');
                 uri = attr.uri || '/upload/upload';
 
+
                 function uploadFile(file, uri, index) {
-                    console.log(file, uri, index);
                     var xhr = new XMLHttpRequest(),
                         fd = new FormData(),
                         progress = 0;
@@ -43,12 +45,23 @@ angular.module('fileUpload', [])
                     }, false);
                     fd.append(fileName, file);
                     xhr.send(fd);
+
+                    if (withPreview) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            scope.__userFiles[index].preview = e.target.result;
+                            scope.$apply();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+
                     return {
                         name: file.name,
                         size: file.size,
                         type: file.type,
                         status: {},
-                        percent: 0
+                        percent: 0,
+                        preview: null
                     }
                 }
 
@@ -62,10 +75,8 @@ angular.module('fileUpload', [])
                     for (var i = 0, f; f = files[i]; i++) {
                         list.push(uploadFile(f, uri, i));
                     }
-
                     e.srcElement.files = null;
                     e.srcElement.value = '';
-
                     scope.__userFiles = list;
                     scope.$apply();
                 })
