@@ -10,11 +10,11 @@ As a directive, the entire process can be easily customized with your own CSS an
 
 ## Example: 
 ```HTML
-<file-upload class="btn btn-success btn-rad btn-trans file-upload" name="userFile" multiple="false" uri="/upload/upload" accept="">
+<file-upload class="btn btn-success btn-rad btn-trans file-upload" name="userFile" ng-model="my.foo.model" multiple="false" uri="/upload/upload" accept="image/png, image/jpg">
     <i class="fa fa-upload"></i>
     <span>Upload Files</span>
     <ul>
-        <li ng-repeat="p in __userFiles" ng-hide="p.percent == 100">
+        <li ng-repeat="p in my.foo.model" ng-hide="p.percent == 100">
             <small>{{ p.name }}</small>
             <div class="progress">
                 <div class="progress-bar" style="width: {{ p.percent }}%;"></div>
