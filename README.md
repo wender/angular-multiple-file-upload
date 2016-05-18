@@ -24,9 +24,10 @@ As a directive, the entire process can be easily customized with your own CSS an
 </file-upload>
 ```
 
-This directive has it's own model called "__userFiles", this model contains whole information about selected files, progress and status.
+This directive will keep it's model update with whole information about selected files, progress and status.
 
 ## Attributes
+- **ng-model**: ***required***
 - **name**: default 'userFile'
 - **uri**: default '/upload/upload'
 - **multiple**: default 'true'
@@ -35,7 +36,7 @@ This directive has it's own model called "__userFiles", this model contains whol
 - **preview**: default 'false' (Process a base64 preview of the selected image)
 
 ## Return
-Returns a model called __userFiles with an Array of objects
+Charge it's model with an Array of objects
 
 ```JAVASCRIPT
 [{

@@ -3,12 +3,13 @@ angular.module('fileUpload', [])
     .directive('fileUpload', function () {
         return {
             restrict: 'E',
-            template: '<div ng-transclude ng-model="__userFiles"></div>',
+            template: '<div ng-transclude></div>',
             replace: true,
             transclude: true,
             scope: {
-                __userFiles: '=ngModel'
+                ngModel: '='
             },
+            require: 'ngModel',
             link: function (scope, el, attr) {
                 var fileName,
                     uri,
@@ -22,7 +23,6 @@ angular.module('fileUpload', [])
                 el.append('<input style="display: none !important;" type="file" ' + (attr.multiple == 'true' ? 'multiple' : '') + ' accept="' + (attr.accept ? attr.accept : '') + '" name="' + fileName + '"/>');
                 uri = attr.uri || '/upload/upload';
 
-
                 function uploadFile(file, uri, index) {
                     var xhr = new XMLHttpRequest(),
                         fd = new FormData(),
@@ -31,7 +31,7 @@ angular.module('fileUpload', [])
                     xhr.open('POST', uri, true);
                     xhr.withCredentials = shareCredentials;
                     xhr.onreadystatechange = function () {
-                        scope.__userFiles[index].status = {
+                        scope.ngModel[index].status = {
                             code: xhr.status,
                             statusText: xhr.statusText,
                             response: xhr.response
@@ -40,7 +40,7 @@ angular.module('fileUpload', [])
                     };
                     xhr.upload.addEventListener("progress", function (e) {
                         progress = parseInt(e.loaded / e.total * 100);
-                        scope.__userFiles[index].percent = progress;
+                        scope.ngModel[index].percent = progress;
                         scope.$apply();
                     }, false);
                     fd.append(fileName, file);
@@ -49,7 +49,7 @@ angular.module('fileUpload', [])
                     if (withPreview) {
                         var reader = new FileReader();
                         reader.onload = function (e) {
-                            scope.__userFiles[index].preview = e.target.result;
+                            scope.ngModel[index].preview = e.target.result;
                             scope.$apply();
                         };
                         reader.readAsDataURL(file);
@@ -77,7 +77,7 @@ angular.module('fileUpload', [])
                     }
                     e.srcElement.files = null;
                     e.srcElement.value = '';
-                    scope.__userFiles = list;
+                    scope.ngModel = list;
                     scope.$apply();
                 })
             }
