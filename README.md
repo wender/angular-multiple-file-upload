@@ -31,6 +31,7 @@ This directive has it's own model called "__userFiles", this model contains whol
 - **uri**: default '/upload/upload'
 - **multiple**: default 'true'
 - **accept**: default empty (Accept comma-separated list of MIME Types)
+- **credentials**: default 'false' (Share your credentials between your browser and the API)
 
 ## Return
 Returns a model called __userFiles with an Array of objects
@@ -50,4 +51,4 @@ Returns a model called __userFiles with an Array of objects
 ```
 
 ## Bower
-bower install angular-multiple-file-upload
+	bower install angular-multiple-file-upload --save
