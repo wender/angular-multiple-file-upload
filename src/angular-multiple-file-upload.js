@@ -1,6 +1,6 @@
 "use strict";
-angular.module('fileUpload',[])
-    .directive('fileUpload', function(){
+angular.module('fileUpload', [])
+    .directive('fileUpload', function () {
         return {
             restrict: 'E',
             template: '<div ng-transclude ng-model="__userFiles"></div>',
@@ -9,22 +9,26 @@ angular.module('fileUpload',[])
             scope: {
                 __userFiles: '=ngModel'
             },
-            link: function(scope, el, attr){
+            link: function (scope, el, attr) {
                 var fileName,
-                    uri;
+                    uri,
+                    shareCredentials;
 
                 fileName = attr.name || 'userFile';
+                shareCredentials = attr.credentials === 'true' ? true : false;
 
-                el.append('<input style="display: none !important;" type="file" '+(attr.multiple=='true'?'multiple':'')+' accept="'+(attr.accept?attr.accept:'')+'" name="'+fileName+'"/>');
-                uri = attr.uri||'/upload/upload';
+                el.append('<input style="display: none !important;" type="file" ' + (attr.multiple == 'true' ? 'multiple' : '') + ' accept="' + (attr.accept ? attr.accept : '') + '" name="' + fileName + '"/>');
+                uri = attr.uri || '/upload/upload';
 
                 function uploadFile(file, uri, index) {
+                    console.log(file, uri, index);
                     var xhr = new XMLHttpRequest(),
                         fd = new FormData(),
                         progress = 0;
 
                     xhr.open('POST', uri, true);
-                    xhr.onreadystatechange = function(){
+                    xhr.withCredentials = shareCredentials;
+                    xhr.onreadystatechange = function () {
                         scope.__userFiles[index].status = {
                             code: xhr.status,
                             statusText: xhr.statusText,
@@ -32,7 +36,7 @@ angular.module('fileUpload',[])
                         };
                         scope.$apply();
                     };
-                    xhr.upload.addEventListener("progress", function(e) {
+                    xhr.upload.addEventListener("progress", function (e) {
                         progress = parseInt(e.loaded / e.total * 100);
                         scope.__userFiles[index].percent = progress;
                         scope.$apply();
@@ -48,18 +52,18 @@ angular.module('fileUpload',[])
                     }
                 }
 
-                el.bind('click',function(){
+                el.bind('click', function () {
                     scope.$eval(el.find('input')[0].click());
                 });
 
-                angular.element(el.find('input')[0]).bind('change', function(e){
+                angular.element(el.find('input')[0]).bind('change', function (e) {
                     var files = e.srcElement.files || e.dataTransfer.files;
                     var list = [];
                     for (var i = 0, f; f = files[i]; i++) {
-                        list.push(uploadFile(f,uri,i));
+                        list.push(uploadFile(f, uri, i));
                     }
 
-                    e.srcElement.files = [];
+                    e.srcElement.files = null;
                     e.srcElement.value = '';
 
                     scope.__userFiles = list;
