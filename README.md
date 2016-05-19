@@ -28,6 +28,7 @@ This directive will keep it's model update with whole information about selected
 
 ## Attributes
 - **ng-model**: ***required***
+- **disabled**: (model) default false (If you want to disable file selection for example if you want to add an Delete buttom inside the image area)
 - **name**: default 'userFile'
 - **uri**: default '/upload/upload'
 - **multiple**: default 'true'

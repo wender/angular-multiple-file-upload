@@ -7,7 +7,8 @@ angular.module('fileUpload', [])
             replace: true,
             transclude: true,
             scope: {
-                ngModel: '='
+                ngModel: '=',
+                disabled: '='
             },
             require: 'ngModel',
             link: function (scope, el, attr) {
@@ -66,7 +67,9 @@ angular.module('fileUpload', [])
                 }
 
                 el.bind('click', function () {
-                    scope.$eval(el.find('input')[0].click());
+                    if (!scope.disabled) {
+                        scope.$eval(el.find('input')[0].click());
+                    }
                 });
 
                 angular.element(el.find('input')[0]).bind('change', function (e) {
