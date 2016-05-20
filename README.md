@@ -35,6 +35,7 @@ This directive will keep it's model update with whole information about selected
 - **accept**: default empty (Accept comma-separated list of MIME Types)
 - **credentials**: default 'false' (Share your credentials between your browser and the API)
 - **preview**: default 'false' (Process a base64 preview of the selected image)
+- **file-selector**: default 'false' (By default the whole area is clickable but you may want to select the file targeting some other element inside the directive, uses css selector such as "span.file-buttom")
 
 ## Return
 Charge it's model with an Array of objects

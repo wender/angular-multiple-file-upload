@@ -1,6 +1,6 @@
 "use strict";
 angular.module('fileUpload', [])
-    .directive('fileUpload', function () {
+    .directive('fileUpload', ['$timeout', function ($timeout) {
         return {
             restrict: 'E',
             template: '<div ng-transclude></div>',
@@ -15,11 +15,14 @@ angular.module('fileUpload', [])
                 var fileName,
                     uri,
                     shareCredentials,
-                    withPreview;
+                    withPreview,
+                    fileSelector,
+                    sel;
 
                 fileName = attr.name || 'userFile';
                 shareCredentials = attr.credentials === 'true' ? true : false;
                 withPreview = attr.preview === 'true' ? true : false;
+                fileSelector = angular.isDefined(attr.fileSelector)  ? attr.fileSelector : false;
 
                 el.append('<input style="display: none !important;" type="file" ' + (attr.multiple == 'true' ? 'multiple' : '') + ' accept="' + (attr.accept ? attr.accept : '') + '" name="' + fileName + '"/>');
                 uri = attr.uri || '/upload/upload';
@@ -66,10 +69,13 @@ angular.module('fileUpload', [])
                     }
                 }
 
-                el.bind('click', function () {
-                    if (!scope.disabled) {
-                        scope.$eval(el.find('input')[0].click());
-                    }
+                $timeout(function(){
+                    sel = fileSelector?angular.element(el[0].querySelectorAll(fileSelector)[0]):el;
+                    sel.bind('click', function () {
+                        if (!scope.disabled) {
+                            scope.$eval(el.find('input')[0].click());
+                        }
+                    });
                 });
 
                 angular.element(el.find('input')[0]).bind('change', function (e) {
@@ -85,4 +91,4 @@ angular.module('fileUpload', [])
                 })
             }
         }
-    });
+    }]);
