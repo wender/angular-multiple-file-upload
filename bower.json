@@ -1,8 +1,8 @@
 {
   "name": "angular-multiple-file-upload",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "Wender Lima",
-  "description": "AngularJS directive for file upload with no dependencies, just HTML5 and pure javascript",
+  "description": "AngularJS directive for file upload, progress bar, preview, resize with no dependencies, just HTML5 and pure javascript",
   "dependencies": {},
   "homepage": "https://github.com/wender/angular-multiple-file-upload",
   "authors": [
