@@ -115,7 +115,6 @@ angular.module('fileUpload', [])
                 }
 
                 function uploadFile(file, uri, index) {
-                    console.log(file, uri, index);
                     var xhr = new XMLHttpRequest(),
                         fd = new FormData(),
                         progress = 0;
