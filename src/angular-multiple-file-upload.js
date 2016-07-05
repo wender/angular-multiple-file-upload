@@ -13,7 +13,6 @@ angular.module('fileUpload', [])
             require: 'ngModel',
             link: function (scope, el, attr) {
                 var fileName,
-                    uri,
                     shareCredentials,
                     withPreview,
                     fileSelector,
@@ -31,9 +30,8 @@ angular.module('fileUpload', [])
                 fileSelector = angular.isDefined(attr.fileSelector) ? attr.fileSelector : false;
 
                 el.append('<input style="display: none !important;" type="file" ' + (attr.multiple == 'true' ? 'multiple' : '') + ' accept="' + (attr.accept ? attr.accept : '') + '" name="' + fileName + '"/>');
-                uri = attr.uri || '/upload/upload';
 
-                function Resize(file, uri, index, type) {
+                function Resize(file, index, type) {
                     var canvas = document.createElement("canvas");
                     var img = document.createElement("img");
                     var reader = new FileReader();
@@ -92,33 +90,32 @@ angular.module('fileUpload', [])
                         ctx.drawImage(img, 0, 0, width, height);
                         var b64 = canvas.toDataURL(type).split(',')[1];
                         file = b64toBlob(b64, type, 512);
-                        uploadFile(file, uri, index);
+                        uploadFile(file, index);
                     }
-                };
+                }
 
 
-                function upload(file, uri, index) {
+                function upload(file, index) {
                     if (resize && maxWidth && maxHeight && (file.type.indexOf('image/') !== -1)) {
-                        Resize(file, uri, index, file.type);
+                        Resize(file, index, file.type);
                     } else {
-                        uploadFile(file, uri, index);
+                        uploadFile(file, index);
                     }
-                    return {
+                    return angular.extend(scope.ngModel[index], {
                         name: file.name,
                         size: file.size,
                         type: file.type,
                         status: {},
                         percent: 0,
                         preview: null
-                    }
-
+                    });
                 }
 
-                function uploadFile(file, uri, index) {
+                function uploadFile(file, index) {
                     var xhr = new XMLHttpRequest(),
                         fd = new FormData(),
-                        progress = 0;
-
+                        progress = 0,
+                        uri = attr.uri || '/upload/upload';
                     xhr.open('POST', uri, true);
                     xhr.withCredentials = shareCredentials;
                     xhr.onreadystatechange = function () {
@@ -161,7 +158,7 @@ angular.module('fileUpload', [])
                     var files = e.srcElement.files || e.dataTransfer.files;
                     var list = [];
                     for (var i = 0, f; f = files[i]; i++) {
-                        list.push(upload(f, uri, i));
+                        list.push(upload(f, i));
                     }
                     e.srcElement.files = null;
                     e.srcElement.value = '';
