@@ -157,6 +157,7 @@ angular.module('fileUpload', [])
                 angular.element(el.find('input')[0]).bind('change', function (e) {
                     var files = e.srcElement.files || e.dataTransfer.files;
                     var list = [];
+                    scope.ngModel = list;
                     for (var i = 0, f; f = files[i]; i++) {
                         list.push(upload(f, i));
                     }
