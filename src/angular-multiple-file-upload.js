@@ -95,16 +95,16 @@ angular.module('fileUpload', [])
                 }
 
 
-                function upload(file, index) {
+                function upload(fileProperties, index, file) {
                     if (resize && maxWidth && maxHeight && (file.type.indexOf('image/') !== -1)) {
                         Resize(file, index, file.type);
                     } else {
                         uploadFile(file, index);
                     }
                     return angular.extend(scope.ngModel[index], {
-                        name: file.name,
-                        size: file.size,
-                        type: file.type,
+                        name: fileProperties.name,
+                        size: fileProperties.size,
+                        type: fileProperties.type,
                         status: {},
                         percent: 0,
                         preview: null
@@ -156,14 +156,22 @@ angular.module('fileUpload', [])
 
                 angular.element(el.find('input')[0]).bind('change', function (e) {
                     var files = e.srcElement.files || e.dataTransfer.files;
-                    var list = [];
-                    scope.ngModel = list;
-                    for (var i = 0, f; f = files[i]; i++) {
-                        list.push(upload(f, i));
+                    scope.ngModel = [];
+                    var f;
+                    for (var i = 0; i < files.length; i++) {
+                        f = {
+                            name: files[i].name,
+                            size: files[i].size,
+                            type: files[i].type,
+                            status: {},
+                            percent: 0,
+                            preview: null
+                        };
+                        scope.ngModel.push(f);
+                        upload(f, i, files[i]);
                     }
                     e.srcElement.files = null;
                     e.srcElement.value = '';
-                    scope.ngModel = list;
                     scope.$apply();
                 })
             }
