@@ -7,6 +7,7 @@ angular.module('fileUpload', [])
             replace: true,
             transclude: true,
             scope: {
+                headers: '=',
                 ngModel: '=',
                 disabled: '='
             },
@@ -118,6 +119,11 @@ angular.module('fileUpload', [])
                         uri = attr.uri || '/upload/upload';
                     xhr.open('POST', uri, true);
                     xhr.withCredentials = shareCredentials;
+                    if (scope.headers) {
+                        scope.headers.forEach(function (item) {
+                            xhr.setRequestHeader(item.header, item.value);
+                        });
+                    }
                     xhr.onreadystatechange = function () {
                         scope.ngModel[index].status = {
                             code: xhr.status,
