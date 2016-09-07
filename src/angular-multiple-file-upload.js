@@ -161,7 +161,7 @@ angular.module('fileUpload', [])
                 });
 
                 angular.element(el.find('input')[0]).bind('change', function (e) {
-                    var files = e.srcElement.files || e.dataTransfer.files;
+                    var files = e.target.files;
                     if (!angular.isDefined(scope.ngModel) || attr.multiple === 'true') {
                         scope.ngModel = [];
                     }
