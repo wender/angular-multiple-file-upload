@@ -67,34 +67,34 @@ angular.module('fileUpload', [])
                     }
 
                     function draw() {
+                        var width = img.width;
+                        var height = img.height;
                         var ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0);
 
-                        var width = img.width;
-                        var height = img.height;
+                        if (width > 0 && height > 0) {
+                            if (width > height) {
+                                if (width > maxWidth) {
+                                    height *= maxWidth / width;
+                                    width = maxWidth;
+                                }
+                            } else {
+                                if (height > maxHeight) {
+                                    width *= maxHeight / height;
+                                    height = maxHeight;
+                                }
+                            }
 
-                        if (width > height) {
-                            if (width > maxWidth) {
-                                height *= maxWidth / width;
-                                width = maxWidth;
-                            }
-                        } else {
-                            if (height > maxHeight) {
-                                width *= maxHeight / height;
-                                height = maxHeight;
-                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+                            var b64 = canvas.toDataURL(type).split(',')[1];
+                            file = b64toBlob(b64, type, 512);
                         }
-                        canvas.width = width;
-                        canvas.height = height;
 
-                        ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, width, height);
-                        var b64 = canvas.toDataURL(type).split(',')[1];
-                        file = b64toBlob(b64, type, 512);
                         uploadFile(file, index);
                     }
                 }
-
 
                 function upload(fileProperties, index, file) {
                     if (resize && maxWidth && maxHeight && (file.type.indexOf('image/') !== -1)) {
@@ -178,8 +178,6 @@ angular.module('fileUpload', [])
                         scope.ngModel.push(f);
                         upload(f, i, files[i]);
                     }
-                    e.srcElement.files = null;
-                    e.srcElement.value = '';
                     scope.$apply();
                 })
             }
