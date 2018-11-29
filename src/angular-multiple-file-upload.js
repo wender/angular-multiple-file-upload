@@ -178,6 +178,7 @@ angular.module('fileUpload', [])
                         scope.ngModel.push(f);
                         upload(f, i, files[i]);
                     }
+                    e.target.value = null
                     scope.$apply();
                 })
             }
